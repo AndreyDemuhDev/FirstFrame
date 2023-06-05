@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">FirstFrame</string>
+    <string name="wrong_email">Wrong Email</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="wrong_login">Wrong Login</string>
+    <string name="enter_login">Enter your login</string>
+    <string name="wrong_password">Wrong Password</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="Login">Login</string>
+    <string name="Sign_up">Sign Up</string>
+    <string name="Forgot">Forgot</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="enter_account">Enter your account</string>
+    <string name="create_account">Create your account</string>
+    <string name="forgot_screen">Forgot your password</string>
+
+</resources>
