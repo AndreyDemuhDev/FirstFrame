@@ -2,6 +2,7 @@ package com.pidzama.firstframe.screens.auth
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.pidzama.firstframe.R
 import androidx.compose.ui.unit.dp
@@ -34,7 +36,7 @@ fun LoginScreen(
     val checkedState = remember { mutableStateOf(false) }
 
     Card(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -44,18 +46,24 @@ fun LoginScreen(
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "logo image",
-                modifier = Modifier.size(200.dp).padding(top = 20.dp)
+                modifier = Modifier
+                    .size(200.dp)
+                    .padding(top = 20.dp)
             )
             Text(
                 text = stringResource(R.string.enter_account),
-                fontSize = 40.sp
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayMedium
             )
             OutlinedTextField(
                 value = login.value,
                 singleLine = true,
                 shape = MaterialTheme.shapes.large,
-                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 onValueChange = { login.value = it },
                 leadingIcon = {
                     Icon(
@@ -82,9 +90,9 @@ fun LoginScreen(
                     )
                 },
                 singleLine = true,
-                shape = MaterialTheme.shapes.medium,
+                shape = MaterialTheme.shapes.large,
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.onPrimary),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 label = { Text(text = stringResource(id = R.string.enter_password)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -96,7 +104,8 @@ fun LoginScreen(
                     .align(Alignment.End)
                     .clickable { navController.navigate(AuthScreen.Forgot.route) },
                 text = stringResource(id = R.string.forgot_password),
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.titleSmall
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val enabledCheckBox = login.value.isNotEmpty() && password.value.isNotEmpty()
@@ -105,25 +114,39 @@ fun LoginScreen(
                     onCheckedChange = { checkedState.value = it },
                     enabled = enabledCheckBox
                 )
-                Text(text = stringResource(R.string.remember_me))
-            }
-            Button(onClick = {
-                navController.popBackStack()
-                navController.navigate(Graph.HOME)
-            }) {
                 Text(
-                    text = stringResource(R.string.Login),
-                    modifier = Modifier.padding(horizontal = 60.dp)
+                    text = stringResource(R.string.remember_me),
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
-            OutlinedButton(
-                onClick = { navController.navigate(AuthScreen.SignUp.route) }
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.Sign_up),
-                    modifier = Modifier.padding(horizontal = 60.dp),
-                )
+                Button(onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Graph.HOME)
+                }) {
+                    Text(
+                        text = stringResource(R.string.Login),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                OutlinedButton(
+                    onClick = { navController.navigate(AuthScreen.SignUp.route) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.Sign_up),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
             }
+
         }
     }
 }
