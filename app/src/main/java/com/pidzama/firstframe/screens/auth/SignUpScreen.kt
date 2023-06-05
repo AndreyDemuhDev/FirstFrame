@@ -10,18 +10,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pidzama.firstframe.R
-import com.pidzama.firstframe.navigation.AuthScreen
 import com.pidzama.firstframe.navigation.Graph
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,18 +43,25 @@ fun SignUpScreen(
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = "logo image",
-                modifier = Modifier.size(200.dp).padding(top = 20.dp)
+                modifier = Modifier
+                    .size(200.dp)
+                    .padding(top = 20.dp)
             )
             Text(
                 text = stringResource(R.string.create_account),
-                fontSize = 40.sp
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayMedium
             )
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp),
                 value = login.value,
                 onValueChange = { login.value = it },
+                shape = MaterialTheme.shapes.large,
                 label = { Text(text = stringResource(id = R.string.enter_login)) },
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next
@@ -74,8 +80,9 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = email.value,
                 onValueChange = { email.value = it },
+                shape = MaterialTheme.shapes.large,
                 label = { Text(text = stringResource(id = R.string.enter_email)) },
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_email),
@@ -94,8 +101,9 @@ fun SignUpScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = password.value,
                 onValueChange = { password.value = it },
+                shape = MaterialTheme.shapes.large,
                 label = { Text(text = stringResource(R.string.enter_password)) },
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_password_lock),
@@ -110,13 +118,19 @@ fun SignUpScreen(
                     onDone = { }
                 )
             )
-            Button(onClick = {
-                navController.popBackStack()
-                navController.navigate(Graph.HOME)
-            }) {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp),
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Graph.HOME)
+                }) {
                 Text(
                     text = stringResource(R.string.Sign_up),
-                    modifier = Modifier.padding(horizontal = 60.dp)
+                    modifier = Modifier.padding(horizontal = 60.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
         }

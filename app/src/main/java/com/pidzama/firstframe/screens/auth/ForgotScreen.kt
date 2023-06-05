@@ -44,19 +44,25 @@ fun ForgotScreen(
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = "logo image",
-                modifier = Modifier.size(200.dp).padding(top = 20.dp)
+                modifier = Modifier
+                    .size(200.dp)
+                    .padding(top = 20.dp)
             )
             Text(
                 text = stringResource(R.string.forgot_screen),
                 textAlign = TextAlign.Center,
-                fontSize = 34.sp
+                fontSize = 34.sp,
+                style = MaterialTheme.typography.displayMedium
             )
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp),
                 value = email.value,
                 onValueChange = { email.value = it },
+                shape = MaterialTheme.shapes.large,
                 label = { Text(text = stringResource(R.string.enter_email)) },
-                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 leadingIcon = {
                     Icon(
                         painter = painterResource(R.drawable.ic_email),
@@ -68,12 +74,21 @@ fun ForgotScreen(
                     imeAction = ImeAction.Done
                 )
             )
-            Button(onClick = {
-                navController.popBackStack()
-                navController.navigate(Graph.HOME)
-            }) {
-                Text(text = stringResource(R.string.Login),
-                modifier = Modifier.padding(horizontal = 60.dp))
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp)
+                    .padding(top = 40.dp),
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Graph.HOME)
+                }) {
+                Text(
+                    text = stringResource(R.string.Login),
+                    modifier = Modifier.padding(horizontal = 60.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
     }
