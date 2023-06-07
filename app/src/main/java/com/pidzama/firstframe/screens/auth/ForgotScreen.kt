@@ -42,7 +42,7 @@ fun ForgotScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(R.drawable.logo),
+                painter = painterResource(R.drawable.splash_logo),
                 contentDescription = "logo image",
                 modifier = Modifier
                     .size(200.dp)
