@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.pidzama.firstframe.screens.home.HomeScreen
+import com.pidzama.firstframe.screens.home.MainScreen
 
 @Composable
 fun RootNavGraph(
@@ -19,11 +19,10 @@ fun RootNavGraph(
         onBoardingGraph(navController = navController)
         authNavGraph(navController = navController)
         composable(route = Graph.HOME) {
-            HomeScreen()
+            MainScreen()
         }
     }
 }
-
 
 object Graph {
     const val ROOT = "root_graph"
