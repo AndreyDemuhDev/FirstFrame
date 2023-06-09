@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
+        topBar = { TabLayout()}
     ) {
         Column {
             HomeNavGraph(navController = navController)

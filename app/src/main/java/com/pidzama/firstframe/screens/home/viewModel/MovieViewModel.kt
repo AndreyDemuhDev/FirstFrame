@@ -19,9 +19,25 @@ class MovieViewModel @Inject constructor(
     val allMovies: LiveData<List<Docs>>
         get() = _allMovies
 
+    private val _topMovies = MutableLiveData<List<Docs>>()
+    val topMovies: LiveData<List<Docs>>
+        get() = _topMovies
+
     fun getAllMovies() {
         viewModelScope.launch {
             movieRepository.getAllMovies().let {
+                if (it.isSuccessful) {
+                    _allMovies.postValue(it.body()?.docs)
+                } else {
+                    it.errorBody()
+                }
+            }
+        }
+    }
+
+    fun getTopMovies() {
+        viewModelScope.launch {
+            movieRepository.getTopMovies().let {
                 if (it.isSuccessful) {
                     _allMovies.postValue(it.body()?.docs)
                 } else {
