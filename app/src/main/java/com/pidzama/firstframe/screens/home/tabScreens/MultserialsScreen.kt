@@ -21,14 +21,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.MultserialsViewModel
 
 @Composable
 fun MultserialsScreen(navController: NavHostController = rememberNavController()) {
     val viewModel = hiltViewModel<MultserialsViewModel>()
     val listMultserials = viewModel.allMultserials.observeAsState(listOf()).value
+    val listTopMultserials = viewModel.topMultserials.observeAsState(listOf()).value
+    val listComingSoonMultserials = viewModel.comingSoonMultserials.observeAsState(listOf()).value
     viewModel.getAllMultserials()
+    viewModel.getTopMultserials()
+    viewModel.getComingSoonMultserials()
 
     Surface(
         modifier = Modifier.fillMaxWidth()
@@ -44,18 +48,8 @@ fun MultserialsScreen(navController: NavHostController = rememberNavController()
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listMultserials.take(2)) { item ->
+                            items(listMultserials.take(6)) { item ->
                                 ListAllMultserials(movie = item, navController = navController)
-                            }
-                        }
-                    }
-                    Text(text = "Coming Soon Multserials")
-                    Card {
-                        LazyRow(
-                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
-                        ) {
-                            items(listMultserials.take(2)) { item ->
-                                ListMultserials(movie = item, navController = navController)
                             }
                         }
                     }
@@ -64,7 +58,17 @@ fun MultserialsScreen(navController: NavHostController = rememberNavController()
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listMultserials.take(2)) { item ->
+                            items(listTopMultserials.take(6)) { item ->
+                                ListMultserials(movie = item, navController = navController)
+                            }
+                        }
+                    }
+                    Text(text = "Coming Soon Multserials")
+                    Card {
+                        LazyRow(
+                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
+                        ) {
+                            items(listComingSoonMultserials.take(6)) { item ->
                                 ListMultserials(movie = item, navController = navController)
                             }
                         }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,6 +23,10 @@ class MovieViewModel @Inject constructor(
     val topMovies: LiveData<List<Docs>>
         get() = _topMovies
 
+    private val _comingSoonMovies = MutableLiveData<List<Docs>>()
+    val comingSoonMovies: LiveData<List<Docs>>
+        get() = _comingSoonMovies
+
     fun getAllMovies() {
         viewModelScope.launch {
             movieRepository.getAllMovies().let {
@@ -39,7 +43,19 @@ class MovieViewModel @Inject constructor(
         viewModelScope.launch {
             movieRepository.getTopMovies().let {
                 if (it.isSuccessful) {
-                    _allMovies.postValue(it.body()?.docs)
+                    _topMovies.postValue(it.body()?.docs)
+                } else {
+                    it.errorBody()
+                }
+            }
+        }
+    }
+
+    fun getComingSoonMovies() {
+        viewModelScope.launch {
+            movieRepository.getComingSoonMovies().let {
+                if (it.isSuccessful) {
+                    _comingSoonMovies.postValue(it.body()?.docs)
                 } else {
                     it.errorBody()
                 }

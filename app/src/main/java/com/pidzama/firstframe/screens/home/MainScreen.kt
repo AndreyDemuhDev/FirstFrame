@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        topBar = { TabLayout()}
+//        topBar = { TabLayout()}
     ) {
         Column {
             HomeNavGraph(navController = navController)
@@ -104,7 +103,6 @@ fun TabLayout() {
         TabScreens.Cartoon,
         TabScreens.Anime,
         TabScreens.Multserials,
-        TabScreens.TVshows
     )
     val pagerState = rememberPagerState()
     val tabIndex = pagerState.currentPage
@@ -136,7 +134,7 @@ fun TabLayout() {
                 )
             }
         }
-        HorizontalPager(
+        HorizontalPager(modifier = Modifier,
             count = tabList.size,
             state = pagerState,
         ) { page ->
