@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.TvSeriesViewModel
 
 @Composable
@@ -29,7 +29,11 @@ fun TvSeriesScreen(navController: NavHostController = rememberNavController()) {
 
     val viewModel = hiltViewModel<TvSeriesViewModel>()
     val listTvSeries = viewModel.tvSeries.observeAsState(listOf()).value
+    val listTopTvSeries = viewModel.topTvSeries.observeAsState(listOf()).value
+    val listComingSoonTvSeries = viewModel.comingSoonTvSeries.observeAsState(listOf()).value
     viewModel.getListTvSeries()
+    viewModel.getTopTvSeries()
+    viewModel.getComingSoonTvSeries()
 
     Surface(
         modifier = Modifier.fillMaxWidth()
@@ -45,27 +49,27 @@ fun TvSeriesScreen(navController: NavHostController = rememberNavController()) {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listTvSeries.take(2)) { item ->
+                            items(listTvSeries.take(6)) { item ->
                                 ListAllTvSeries(movie = item, navController = navController)
                             }
                         }
                     }
-                    Text(text = "Coming Soon TV Series")
+                    Text(text = "Top Soon TV Series")
                     Card {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listTvSeries.take(2)) { item ->
+                            items(listTopTvSeries.take(6)) { item ->
                                 ListTvSeries(movie = item, navController = navController)
                             }
                         }
                     }
-                    Text(text = "Top TV series")
+                    Text(text = "Coming Soon  TV series")
                     Card {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listTvSeries.take(2)) { item ->
+                            items(listComingSoonTvSeries.take(6)) { item ->
                                 ListTvSeries(movie = item, navController = navController)
                             }
                         }

@@ -21,14 +21,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.CartoonViewModel
 
 @Composable
-fun CartoonScreen(navController: NavHostController = rememberNavController()){
+fun CartoonScreen(navController: NavHostController = rememberNavController()) {
     val viewModel = hiltViewModel<CartoonViewModel>()
     val listCartoons = viewModel.allCartoons.observeAsState(listOf()).value
+    val listTopCartoons = viewModel.topCartoons.observeAsState(listOf()).value
+    val listComingSoonCartoons = viewModel.comingSoonCartoons.observeAsState(listOf()).value
     viewModel.getAllCatroons()
+    viewModel.getTopCartoons()
+    viewModel.getComingSoonCartoon()
 
     Surface(
         modifier = Modifier.fillMaxWidth()
@@ -44,18 +48,8 @@ fun CartoonScreen(navController: NavHostController = rememberNavController()){
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listCartoons.take(2)) { item ->
+                            items(listCartoons.take(6)) { item ->
                                 ListAllCartoons(movie = item, navController = navController)
-                            }
-                        }
-                    }
-                    Text(text = "Coming Soon Cartoon")
-                    Card {
-                        LazyRow(
-                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
-                        ) {
-                            items(listCartoons.take(2)) { item ->
-                                ListCartoons(movie = item, navController = navController)
                             }
                         }
                     }
@@ -64,7 +58,17 @@ fun CartoonScreen(navController: NavHostController = rememberNavController()){
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listCartoons.take(2)) { item ->
+                            items(listTopCartoons.take(6)) { item ->
+                                ListCartoons(movie = item, navController = navController)
+                            }
+                        }
+                    }
+                    Text(text = "Coming Soon Cartoon")
+                    Card {
+                        LazyRow(
+                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
+                        ) {
+                            items(listComingSoonCartoons.take(6)) { item ->
                                 ListCartoons(movie = item, navController = navController)
                             }
                         }

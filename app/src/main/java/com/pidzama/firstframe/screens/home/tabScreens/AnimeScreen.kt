@@ -21,14 +21,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.AnimeViewModel
 
 @Composable
 fun AnimeScreen(navController: NavHostController = rememberNavController()) {
     val viewModel = hiltViewModel<AnimeViewModel>()
     val listAnimes = viewModel.allAnime.observeAsState(listOf()).value
+    val listTopAnimes = viewModel.topAnime.observeAsState(listOf()).value
+    val listComingSoonAnimes = viewModel.comingSoonAnime.observeAsState(listOf()).value
     viewModel.getAllAnime()
+    viewModel.getTopAnime()
+    viewModel.getComingSoonAnime()
 
     Surface(
         modifier = Modifier.fillMaxWidth()
@@ -44,27 +48,27 @@ fun AnimeScreen(navController: NavHostController = rememberNavController()) {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listAnimes.take(2)) { item ->
+                            items(listAnimes.take(6)) { item ->
                                 ListAllAnime(movie = item, navController = navController)
                             }
                         }
                     }
-                    Text(text = "Coming Soon Animes")
+                    Text(text = "Top Animes")
                     Card {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listAnimes.take(2)) { item ->
+                            items(listTopAnimes.take(6)) { item ->
                                 ListAnime(movie = item, navController = navController)
                             }
                         }
                     }
-                    Text(text = "Top Anime")
+                    Text(text = "Coming Soon Anime")
                     Card {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listAnimes.take(2)) { item ->
+                            items(listComingSoonAnimes.take(6)) { item ->
                                 ListAnime(movie = item, navController = navController)
                             }
                         }

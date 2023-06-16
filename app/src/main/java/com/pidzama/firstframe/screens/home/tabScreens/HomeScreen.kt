@@ -1,4 +1,4 @@
-package com.pidzama.firstframe.screens.home
+package com.pidzama.firstframe.screens.home.tabScreens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.navigation.DetailScreen
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.MovieViewModel
 
 @Composable
@@ -29,12 +30,20 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
 
     val viewModel = hiltViewModel<MovieViewModel>()
     val listAllMovie = viewModel.allMovies.observeAsState(listOf()).value
+    val listTopMovie = viewModel.topMovies.observeAsState(listOf()).value
+    val listComingSoonMovie = viewModel.comingSoonMovies.observeAsState(listOf()).value
     viewModel.getAllMovies()
+    viewModel.getTopMovies()
+    viewModel.getComingSoonMovies()
 
     Surface(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn(modifier = Modifier.padding(bottom = 60.dp)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 60.dp)
+        ) {
             item {
                 Column {
                     Row(modifier = Modifier.fillMaxWidth()) {
@@ -45,18 +54,8 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listAllMovie.take(2)) { item ->
+                            items(listAllMovie.take(6)) { item ->
                                 ListAllMovies(movie = item, navController = navController)
-                            }
-                        }
-                    }
-                    Text(text = "Coming Soon Movies")
-                    Card {
-                        LazyRow(
-                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
-                        ) {
-                            items(listAllMovie.take(2)) { item ->
-                                ListMovies(movie = item, navController = navController)
                             }
                         }
                     }
@@ -65,7 +64,17 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
                         LazyRow(
                             modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         ) {
-                            items(listAllMovie.take(2)) { item ->
+                            items(listTopMovie) { item ->
+                                ListMovies(movie = item, navController = navController)
+                            }
+                        }
+                    }
+                    Text(text = "Coming Soon Movies")
+                    Card {
+                        LazyRow(
+                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
+                        ) {
+                            items(listComingSoonMovie.take(6)) { item ->
                                 ListMovies(movie = item, navController = navController)
                             }
                         }
@@ -112,7 +121,7 @@ fun ListMovies(movie: Docs, navController: NavHostController) {
             .padding(4.dp)
             .fillMaxWidth()
             .requiredHeight(260.dp)
-            .clickable { },
+            .clickable { navController.navigate(DetailScreen.DetailTitle.route + "/${movie.id.toString()}") },
         shape = MaterialTheme.shapes.extraLarge
     ) {
         Column(
