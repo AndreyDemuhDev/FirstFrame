@@ -33,7 +33,7 @@ import com.pidzama.firstframe.network.model.detailItem.Persons
 import com.pidzama.firstframe.utils.timeToString
 
 @Composable
-fun DetailsScreen(id: String, navController: NavHostController) {
+fun DetailsTitleScreen(id: String, navController: NavHostController) {
 
     val viewModel = hiltViewModel<DetailViewModel>()
     val currentTitle = viewModel.detailTitle.observeAsState().value
@@ -97,7 +97,6 @@ fun DetailsScreen(id: String, navController: NavHostController) {
                             .clip(shape = MaterialTheme.shapes.large),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
-
                         ) {
                         Icon(
                             modifier = Modifier.size(30.dp),
@@ -217,6 +216,7 @@ fun DetailsScreen(id: String, navController: NavHostController) {
                             ListCast(person = it, navController = navController)
                         }
                     }
+
                 }
             }
         }

@@ -2,11 +2,14 @@ package com.pidzama.firstframe.network
 
 import com.pidzama.firstframe.network.model.detailItem.DetailItem
 import com.pidzama.firstframe.network.model.detailPerson.DetailPerson
+import com.pidzama.firstframe.network.model.search.SearchItem
+import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.network.model.titles.MovieItems
 import com.pidzama.firstframe.utils.Constants.Companion.TOKEN
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     //фильмы
@@ -18,6 +21,9 @@ interface ApiService {
 
     @GET("v1/person/{id}?token=$TOKEN")
     suspend fun getDetailPerson(@Path("id") id: String):  Response<DetailPerson>
+
+    @GET("/v1.2/movie/search?page=1&limit=10&token=$TOKEN")
+    suspend fun searchTitle(@Query("query") query: String): SearchItem
 
     @GET("v1.3/movie?field=typeNumber&rating.imdb=8-10&search=1&limit=100&token=$TOKEN") //топы фильма
     suspend fun getTopAllMovie(): Response<MovieItems>

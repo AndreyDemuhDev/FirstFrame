@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.pidzama.firstframe.navigation.DetailScreen
 import com.pidzama.firstframe.network.model.titles.Docs
 import com.pidzama.firstframe.screens.home.viewModel.TvSeriesViewModel
 
@@ -116,7 +117,7 @@ fun ListTvSeries(movie: Docs, navController: NavHostController) {
             .padding(4.dp)
             .fillMaxWidth()
             .requiredHeight(260.dp)
-            .clickable { },
+            .clickable { navController.navigate(DetailScreen.DetailTitle.route + "/${movie.id.toString()}") },
         shape = MaterialTheme.shapes.extraLarge
     ) {
         Column(

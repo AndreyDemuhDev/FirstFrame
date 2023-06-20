@@ -4,9 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -94,7 +98,7 @@ fun RowScope.AddItem(
     )
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TabLayout() {
     val tabList = listOf(
@@ -107,38 +111,63 @@ fun TabLayout() {
     val pagerState = rememberPagerState()
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
-    Column(modifier = Modifier.padding(start = 3.dp, end = 3.dp, top = 5.dp)) {
-        ScrollableTabRow(
-            selectedTabIndex = tabIndex,
-            indicator = { position ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier.pagerTabIndicatorOffset(
-                        pagerState = pagerState,
-                        tabPositions = position
-                    ),
-                    height = 3.dp,
-                )
-            },
-            backgroundColor = MaterialTheme.colorScheme.background,
-            contentColor = MaterialTheme.colorScheme.primary
-        ) {
-            tabList.forEachIndexed { index, title ->
-                Tab(
-                    selected = false,
-                    unselectedContentColor = MaterialTheme.colorScheme.primary,
-                    onClick = {
-                        coroutineScope.launch { pagerState.animateScrollToPage(index) }
-                    },
-                    text = { Text(text = title.title) }
-                )
-            }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                scrollBehavior = scrollBehavior,
+                title = {
+                    Text(text = "Top app bar")
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    scrolledContainerColor = MaterialTheme.colorScheme.surface
+                ),
+            )
+        },
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
+                content = {
+                    ScrollableTabRow(
+                        selectedTabIndex = tabIndex,
+                        indicator = { position ->
+                            TabRowDefaults.Indicator(
+                                modifier = Modifier.pagerTabIndicatorOffset(
+                                    pagerState = pagerState,
+                                    tabPositions = position
+                                ),
+                                height = 3.dp,
+                            )
+                        },
+                        backgroundColor = MaterialTheme.colorScheme.background,
+                        contentColor = MaterialTheme.colorScheme.primary
+                    ) {
+                        tabList.forEachIndexed { index, title ->
+                            Tab(
+                                selected = false,
+                                unselectedContentColor = MaterialTheme.colorScheme.primary,
+                                onClick = {
+                                    coroutineScope.launch { pagerState.animateScrollToPage(index) }
+                                },
+                                text = { Text(text = title.title) }
+                            )
+                        }
+                    }
+                    HorizontalPager(
+                        modifier = Modifier.fillMaxWidth(),
+                        count = tabList.size,
+                        state = pagerState,
+                    ) { page ->
+                        tabList[page].screen()
+                    }
+                }
+            )
+
         }
-        HorizontalPager(modifier = Modifier,
-            count = tabList.size,
-            state = pagerState,
-        ) { page ->
-            tabList[page].screen()
-        }
-    }
+    )
 }
