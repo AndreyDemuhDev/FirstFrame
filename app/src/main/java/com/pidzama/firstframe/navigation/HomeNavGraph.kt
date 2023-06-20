@@ -20,7 +20,7 @@ fun HomeNavGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Search.route) {
-            SearchScreen(text = BottomBarScreen.Search.route)
+            SearchScreen()
         }
         composable(route = BottomBarScreen.Favorite.route) {
             FavoriteScreen(text = BottomBarScreen.Favorite.route)

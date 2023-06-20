@@ -23,6 +23,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pidzama.firstframe.navigation.DetailScreen
 import com.pidzama.firstframe.network.model.titles.Docs
+import com.pidzama.firstframe.screens.home.TabLayout
 import com.pidzama.firstframe.screens.home.viewModel.MovieViewModel
 
 @Composable
@@ -36,6 +37,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
     viewModel.getTopMovies()
     viewModel.getComingSoonMovies()
 
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -44,6 +46,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
                 .fillMaxWidth()
                 .padding(bottom = 60.dp)
         ) {
+
             item {
                 Column {
                     Row(modifier = Modifier.fillMaxWidth()) {

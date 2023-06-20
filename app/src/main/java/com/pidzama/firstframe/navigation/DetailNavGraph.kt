@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.pidzama.firstframe.screens.details.DetailPersonScreen
-import com.pidzama.firstframe.screens.details.DetailsScreen
+import com.pidzama.firstframe.screens.details.DetailsTitleScreen
 
 
 fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
@@ -14,7 +14,7 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
         startDestination = DetailScreen.DetailTitle.route
     ) {
         composable(route = DetailScreen.DetailTitle.route + "/{id}") { backStackEntry ->
-            DetailsScreen(
+            DetailsTitleScreen(
                 id = backStackEntry.arguments?.getString("id") ?: "1",
                 navController = navController
             )
