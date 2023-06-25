@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pidzama.firstframe.navigation.DetailScreen
-import com.pidzama.firstframe.network.model.titles.Docs
+import com.pidzama.firstframe.network.model.Docs
 import com.pidzama.firstframe.screens.home.viewModel.AnimeViewModel
 
 @Composable

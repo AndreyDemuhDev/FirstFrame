@@ -1,8 +1,7 @@
 package com.pidzama.firstframe.repository
 
 import com.pidzama.firstframe.network.ApiService
-import com.pidzama.firstframe.network.model.search.SearchItem
-import com.pidzama.firstframe.network.model.titles.MovieItems
+import com.pidzama.firstframe.network.model.SearchItem
 import com.pidzama.firstframe.utils.Resource
 import javax.inject.Inject
 

@@ -1,21 +1,30 @@
 package com.pidzama.firstframe.screens.home
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
+import androidx.compose.material.TabPosition
 import androidx.compose.material.Text
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,19 +33,19 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.pidzama.firstframe.navigation.HomeNavGraph
 import com.pidzama.firstframe.screens.BottomBarScreen
 import com.pidzama.firstframe.screens.TabScreens
 import kotlinx.coroutines.launch
+import com.google.accompanist.pager.PagerState
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-//        topBar = { TabLayout()}
+//        topBar = { TabLayout() }
     ) {
         Column {
             HomeNavGraph(navController = navController)
@@ -114,16 +123,19 @@ fun TabLayout() {
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
+    val indicator = @Composable { tabPosition: List<TabPosition> ->
+        Indicator(tabPosition, pagerState)
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = {
-                    Text(text = "Top app bar")
+                    Text(text = tabList[tabIndex].title)
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    scrolledContainerColor = MaterialTheme.colorScheme.surface
+                    scrolledContainerColor = MaterialTheme.colorScheme.tertiary
                 ),
             )
         },
@@ -134,27 +146,24 @@ fun TabLayout() {
                     .fillMaxSize(),
                 content = {
                     ScrollableTabRow(
+                        modifier = Modifier.height(50.dp),
                         selectedTabIndex = tabIndex,
-                        indicator = { position ->
-                            TabRowDefaults.Indicator(
-                                modifier = Modifier.pagerTabIndicatorOffset(
-                                    pagerState = pagerState,
-                                    tabPositions = position
-                                ),
-                                height = 3.dp,
-                            )
-                        },
-                        backgroundColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.primary
+                        indicator = indicator
                     ) {
                         tabList.forEachIndexed { index, title ->
                             Tab(
+                                modifier = Modifier.zIndex(2f),
                                 selected = false,
                                 unselectedContentColor = MaterialTheme.colorScheme.primary,
                                 onClick = {
                                     coroutineScope.launch { pagerState.animateScrollToPage(index) }
                                 },
-                                text = { Text(text = title.title) }
+                                text = {
+                                    Text(
+                                        text = title.title,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+                                }
                             )
                         }
                     }
@@ -169,5 +178,48 @@ fun TabLayout() {
             )
 
         }
+    )
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+private fun Indicator(
+    tabPositions: List<TabPosition>,
+    pagerState: PagerState
+) {
+    val transition = updateTransition(pagerState.currentPage, label = "")
+    val animationStart by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 50f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 1000f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].left
+    }
+
+    val animationEnd by transition.animateDp(
+        transitionSpec = {
+            if (initialState < targetState) {
+                spring(dampingRatio = 1f, stiffness = 500f)
+            } else {
+                spring(dampingRatio = 1f, stiffness = 50f)
+            }
+        }, label = ""
+    ) {
+        tabPositions[it].right
+    }
+    Box(
+        Modifier
+            .offset(x = animationStart)
+            .wrapContentSize(align = Alignment.BottomStart)
+            .width(animationEnd - animationStart)
+            .fillMaxSize()
+            .padding(5.dp)
+            .background(color = MaterialTheme.colorScheme.surface, RoundedCornerShape(40))
+            .border(BorderStroke(2.dp, MaterialTheme.colorScheme.primary), RoundedCornerShape(40))
+            .zIndex(0.5f)
     )
 }

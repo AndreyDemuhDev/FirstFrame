@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pidzama.firstframe.network.model.detailItem.DetailItem
 import com.pidzama.firstframe.network.model.detailItem.Persons
-import com.pidzama.firstframe.network.model.detailPerson.DetailPerson
+import com.pidzama.firstframe.network.model.DetailPerson
 import com.pidzama.firstframe.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

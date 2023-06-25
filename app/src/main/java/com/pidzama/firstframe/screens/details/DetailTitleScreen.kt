@@ -10,7 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,14 +30,21 @@ import com.gowtham.ratingbar.RatingBarConfig
 import com.pidzama.firstframe.R
 import com.pidzama.firstframe.navigation.DetailScreen
 import com.pidzama.firstframe.network.model.detailItem.Persons
+import com.pidzama.firstframe.screens.home.viewModel.FavoriteViewModel
 import com.pidzama.firstframe.utils.timeToString
 
 @Composable
 fun DetailsTitleScreen(id: String, navController: NavHostController) {
 
     val viewModel = hiltViewModel<DetailViewModel>()
+    val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
     val currentTitle = viewModel.detailTitle.observeAsState().value
     val currentCast = viewModel.listCast.observeAsState(listOf()).value
+
+    var active by remember {
+        mutableStateOf(false)
+    }
+
     viewModel.getDetailTitle(id)
     viewModel.getListPersons(id)
 
@@ -65,14 +72,15 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                         )
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(top = 20.dp, start = 15.dp, end = 15.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         IconButton(modifier = Modifier
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surface.copy(0.2f)),
-                            onClick = { /*TODO*/ }) {
+                            onClick = { navController.popBackStack() }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_button_back),
                                 contentDescription = "buttonBack"
@@ -81,11 +89,24 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                         IconButton(modifier = Modifier
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.surface.copy(0.2f)),
-                            onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(R.drawable.ic_favorite),
-                                contentDescription = "buttonFavorite"
-                            )
+                            onClick = {
+                                currentTitle?.let { favoriteViewModel.chooseTitleFavorite(it) }
+                            }) {
+                            when (favoriteViewModel.isTitleFavorite.value == true) {
+                                active -> true
+                                else -> !active
+                            }
+                            if (active) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_button_back),
+                                    contentDescription = "delete from favorite"
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_favorite),
+                                    contentDescription = "add to favorite"
+                                )
+                            }
                         }
                     }
                     Row(
@@ -97,7 +118,7 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                             .clip(shape = MaterialTheme.shapes.large),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
-                        ) {
+                    ) {
                         Icon(
                             modifier = Modifier.size(30.dp),
                             painter = painterResource(R.drawable.ic_play),
@@ -225,7 +246,7 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
 
 
 @Composable
-fun ListCast(person: Persons, navController :NavHostController) {
+fun ListCast(person: Persons, navController: NavHostController) {
     Card(
         modifier = Modifier
             .padding(8.dp)

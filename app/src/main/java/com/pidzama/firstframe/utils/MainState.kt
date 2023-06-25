@@ -1,7 +1,6 @@
 package com.pidzama.firstframe.utils
 
-import com.pidzama.firstframe.network.model.search.Doc
-import com.pidzama.firstframe.network.model.titles.Docs
+import com.pidzama.firstframe.network.model.Doc
 
 data class MainState(
     val isLoading: Boolean = false,

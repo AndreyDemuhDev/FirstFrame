@@ -1,15 +1,9 @@
 package com.pidzama.firstframe.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
@@ -29,12 +23,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.pidzama.firstframe.R
 import com.pidzama.firstframe.navigation.DetailScreen
-import com.pidzama.firstframe.network.model.search.Doc
-import com.pidzama.firstframe.network.model.titles.Docs
+import com.pidzama.firstframe.network.model.Doc
 import com.pidzama.firstframe.screens.home.viewModel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +40,7 @@ fun SearchScreen(navController: NavHostController = rememberNavController()) {
         mutableStateOf(false)
     }
     val itemsSearch = remember {
-        mutableListOf("")
+        mutableSetOf<String>()
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -98,7 +90,7 @@ fun SearchScreen(navController: NavHostController = rememberNavController()) {
                             contentDescription = "history icon"
                         )
                         Text(
-                            modifier = Modifier.clickable { },
+                            modifier = Modifier.clickable { query.value = it },
                             text = it
                         )
                     }
@@ -224,7 +216,6 @@ fun SearchCardItem(title: Doc, navController: NavHostController) {
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
-
             }
         }
     }
