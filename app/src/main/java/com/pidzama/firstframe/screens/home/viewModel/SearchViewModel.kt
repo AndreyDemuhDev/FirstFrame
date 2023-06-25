@@ -2,13 +2,8 @@ package com.pidzama.firstframe.screens.home.viewModel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pidzama.firstframe.network.model.search.Doc
-import com.pidzama.firstframe.network.model.search.SearchItem
-import com.pidzama.firstframe.network.model.titles.MovieItems
 import com.pidzama.firstframe.repository.MovieRepository
 import com.pidzama.firstframe.utils.MainState
 import com.pidzama.firstframe.utils.Resource
@@ -42,5 +37,4 @@ class SearchViewModel @Inject constructor(
             searchList.value = MainState(error = "Something went wrong")
         }
     }
-
 }
