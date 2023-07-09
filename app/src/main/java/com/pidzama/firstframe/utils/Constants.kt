@@ -14,4 +14,9 @@ class Constants {
         const val BASE_URL = "https://api.kinopoisk.dev/"
         const val TOKEN = "189ZY1V-VF9MPKM-PE65YZD-6M2VRDF"
     }
+
+    object DataStorePreference {
+        const val ONBOARDING_KEY = "on_boarding_completed"
+        const val FAVORITE = "favorite_title"
+    }
 }

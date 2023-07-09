@@ -1,7 +1,7 @@
 package com.pidzama.firstframe.repository
 
 import com.pidzama.firstframe.network.ApiService
-import com.pidzama.firstframe.network.model.SearchItem
+import com.pidzama.firstframe.network.model.MovieItems
 import com.pidzama.firstframe.utils.Resource
 import javax.inject.Inject
 
@@ -37,7 +37,7 @@ class MovieRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getDetailPerson(id: String) = apiService.getDetailPerson(id)
 
     //поиск тайтлов
-    suspend fun searchTitle(query: String): Resource<SearchItem> {
+    suspend fun searchTitle(query: String): Resource<MovieItems> {
         return try {
             val result = apiService.searchTitle(query)
             Resource.Success(data = result)

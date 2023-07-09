@@ -32,5 +32,4 @@ class SplashScreenViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
-
 }

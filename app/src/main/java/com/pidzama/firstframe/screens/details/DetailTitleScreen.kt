@@ -40,10 +40,7 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
     val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
     val currentTitle = viewModel.detailTitle.observeAsState().value
     val currentCast = viewModel.listCast.observeAsState(listOf()).value
-
-    var active by remember {
-        mutableStateOf(false)
-    }
+    val coroutine = rememberCoroutineScope()
 
     viewModel.getDetailTitle(id)
     viewModel.getListPersons(id)
@@ -79,7 +76,7 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                     ) {
                         IconButton(modifier = Modifier
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface.copy(0.2f)),
+                            .background(MaterialTheme.colorScheme.surface.copy(0.35f)),
                             onClick = { navController.popBackStack() }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_button_back),
@@ -88,46 +85,48 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                         }
                         IconButton(modifier = Modifier
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface.copy(0.2f)),
+                            .background(MaterialTheme.colorScheme.surface.copy(0.35f)),
                             onClick = {
                                 currentTitle?.let { favoriteViewModel.chooseTitleFavorite(it) }
                             }) {
-                            when (favoriteViewModel.isTitleFavorite.value == true) {
-                                active -> true
-                                else -> !active
-                            }
-                            if (active) {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_button_back),
-                                    contentDescription = "delete from favorite"
-                                )
-                            } else {
-                                Icon(
-                                    painter = painterResource(R.drawable.ic_favorite),
-                                    contentDescription = "add to favorite"
-                                )
-                            }
+                            Icon(
+                                painter = painterResource(
+                                    id = if (favoriteViewModel.isTitleFavorite.value == false) {
+                                        R.drawable.ic_button_back
+                                    } else {
+                                        R.drawable.ic_favorite
+                                    }
+                                ),
+                                contentDescription = "delete from favorite"
+                            )
                         }
                     }
-                    Row(
+                    Card(
+                        shape = MaterialTheme.shapes.extraLarge,
                         modifier = Modifier
-                            .padding(bottom = 20.dp)
-                            .background(MaterialTheme.colorScheme.surface.copy(0.4f))
+                            .size(width = 140.dp, height = 60.dp)
                             .align(Alignment.BottomCenter)
-                            .size(width = 150.dp, height = 40.dp)
-                            .clip(shape = MaterialTheme.shapes.large),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
+                            .padding(bottom = 20.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface.copy(0.4f)
+                        ),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onPrimary)
                     ) {
-                        Icon(
-                            modifier = Modifier.size(30.dp),
-                            painter = painterResource(R.drawable.ic_play),
-                            contentDescription = "play button"
-                        )
-                        Text(
-                            text = "Watch trailer",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(30.dp),
+                                painter = painterResource(R.drawable.ic_play),
+                                contentDescription = "play button"
+                            )
+                            Text(
+                                text = "Watch trailer",
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(5.dp))
@@ -140,7 +139,7 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                         text = currentTitle?.name.toString(),
                         style = MaterialTheme.typography.headlineSmall
                     )
-                    Row() {
+                    Row {
                         currentTitle?.genres?.take(2)?.forEach { genre ->
                             Text(
                                 text = "${genre.name} ",
@@ -237,7 +236,6 @@ fun DetailsTitleScreen(id: String, navController: NavHostController) {
                             ListCast(person = it, navController = navController)
                         }
                     }
-
                 }
             }
         }

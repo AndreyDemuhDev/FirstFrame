@@ -34,10 +34,10 @@ import com.pidzama.firstframe.network.model.detailItem.DetailItem
 import com.pidzama.firstframe.screens.home.viewModel.FavoriteViewModel
 
 @Composable
-fun FavoriteScreen(navController: NavHostController = rememberNavController()) {
+fun FavoriteScreen(navController: NavHostController) {
 
     val viewModel = hiltViewModel<FavoriteViewModel>()
-    val listFavoriteTitles = viewModel.listFavoriteTitles.collectAsState(initial = emptyList())
+    val listFavoriteTitles = viewModel.listFavoriteTitles.collectAsState(initial = emptyList()).value
 
     Surface(
         modifier = Modifier.fillMaxSize()
@@ -52,7 +52,7 @@ fun FavoriteScreen(navController: NavHostController = rememberNavController()) {
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineSmall
             )
-            if (listFavoriteTitles.value.isEmpty()) {
+            if (listFavoriteTitles.isEmpty()) {
                 Image(
                     painter = painterResource(R.drawable.empty_package),
                     contentDescription = "empty package image",
@@ -62,9 +62,9 @@ fun FavoriteScreen(navController: NavHostController = rememberNavController()) {
                     alignment = Alignment.Center
                 )
             }
-            if (listFavoriteTitles.value.isNotEmpty()) {
+            if (listFavoriteTitles.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.padding(bottom = 50.dp)) {
-                    items(listFavoriteTitles.value) { title ->
+                    items(listFavoriteTitles) { title ->
                         FavoriteItem(title = title, navController = navController)
                     }
                 }
@@ -81,7 +81,7 @@ fun FavoriteItem(title: DetailItem, navController: NavHostController) {
             .padding(4.dp)
             .fillMaxWidth()
             .height(180.dp)
-            .clickable { navController.navigate(DetailScreen.DetailTitle.route + "/${title.id}") },
+            .clickable { navController.navigate(DetailScreen.DetailTitle.route + "/${title.id.toString()}") },
         shape = MaterialTheme.shapes.extraLarge,
         border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.primary)
     ) {

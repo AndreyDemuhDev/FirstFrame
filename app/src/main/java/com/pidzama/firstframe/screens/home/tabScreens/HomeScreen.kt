@@ -21,6 +21,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pidzama.firstframe.navigation.DetailScreen
 import com.pidzama.firstframe.network.model.Docs
+import com.pidzama.firstframe.screens.home.TabLayout
 import com.pidzama.firstframe.screens.home.viewModel.MovieViewModel
 
 @Composable
@@ -51,7 +52,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
                     LazyRow(
                         modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                     ) {
-                        items(listAllMovie.take(6)) { item ->
+                        items(listAllMovie) { item ->
                             ListAllMovies(movie = item, navController = navController)
                         }
                     }
@@ -67,7 +68,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
                     LazyRow(
                         modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                     ) {
-                        items(listComingSoonMovie.take(6)) { item ->
+                        items(listComingSoonMovie) { item ->
                             ListMovies(movie = item, navController = navController)
                         }
                     }

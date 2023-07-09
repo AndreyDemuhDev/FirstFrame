@@ -89,9 +89,9 @@ dependencies {
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:4.9.0"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
-    //Coil
+    //okHTTP
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
     // Coroutine Lifecycle Scopes
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
@@ -99,7 +99,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
     implementation "androidx.activity:activity-ktx:1.4.0"
     implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
-    // Room
+    //Room
     implementation "androidx.room:room-runtime:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
