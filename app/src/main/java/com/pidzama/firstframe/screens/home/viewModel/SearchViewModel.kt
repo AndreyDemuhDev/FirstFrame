@@ -31,7 +31,6 @@ class SearchViewModel @Inject constructor(
                         searchList.value = MainState(data = it)
                     }
                 }
-                else -> {}
             }
         } catch (e: Exception) {
             searchList.value = MainState(error = "Something went wrong")

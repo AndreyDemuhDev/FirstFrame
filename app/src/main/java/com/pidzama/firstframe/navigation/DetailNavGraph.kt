@@ -32,5 +32,4 @@ fun NavGraphBuilder.detailNavGraph(navController: NavHostController) {
 sealed class DetailScreen(val route: String) {
     object DetailTitle : DetailScreen(route = "DETAIL_TITLE")
     object DetailPerson : DetailScreen(route = "DETAIL_PERSON")
-    object DetailSeason : DetailScreen(route = "DETAIL_SEASON")
 }

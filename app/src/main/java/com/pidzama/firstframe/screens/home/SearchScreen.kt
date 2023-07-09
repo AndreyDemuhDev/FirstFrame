@@ -26,12 +26,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.pidzama.firstframe.R
 import com.pidzama.firstframe.navigation.DetailScreen
-import com.pidzama.firstframe.network.model.Doc
+import com.pidzama.firstframe.network.model.Docs
 import com.pidzama.firstframe.screens.home.viewModel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(navController: NavHostController = rememberNavController()) {
+fun SearchScreen(navController: NavHostController) {
 
     val viewModel = hiltViewModel<SearchViewModel>()
     val query: MutableState<String> = remember { mutableStateOf("") }
@@ -144,7 +144,7 @@ fun SearchScreen(navController: NavHostController = rememberNavController()) {
 }
 
 @Composable
-fun SearchCardItem(title: Doc, navController: NavHostController) {
+fun SearchCardItem(title: Docs, navController: NavHostController) {
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -163,7 +163,7 @@ fun SearchCardItem(title: Doc, navController: NavHostController) {
                 if (title.poster != null) {
                     AsyncImage(
                         model = ImageRequest.Builder(context = LocalContext.current)
-                            .data(title.poster)
+                            .data(title.poster?.url)
                             .crossfade(true)
                             .build(),
                         contentDescription = null,
@@ -182,23 +182,25 @@ fun SearchCardItem(title: Doc, navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(all = 5.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(
-                    text = title.name,
+                    text = title.name.toString(),
                     style = MaterialTheme.typography.titleLarge
                 )
-                Text(
-                    text = title.genres.take(2).toString(),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                Row() {
-                    title.countries.forEach { countrie ->
-                        Text(
-                            text = countrie,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
+                Row{
+                    val listGenres = title.genres.take(3).map { it.name }
+                    Text(
+                        text = listGenres.joinToString(separator = ", "),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+                Row{
+                    val listCountries = title.countries.take(2).map { it.name }
+                    Text(
+                        text = listCountries.joinToString(separator = ", "),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
                 Text(
                     text = title.year.toString(),
@@ -210,7 +212,7 @@ fun SearchCardItem(title: Doc, navController: NavHostController) {
                         contentDescription = "rating",
                         tint = Color.Yellow
                     )
-                    val rating = title.rating
+                    val rating = title.rating?.imdb
                     Text(
                         text = String.format("%.1f", rating),
                         style = MaterialTheme.typography.bodyLarge
